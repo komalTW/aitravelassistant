@@ -3,3 +3,6 @@
 .venv
 env/
 venv/
+src/__pycache__/
+src/*.pyc
+src/*.pyo

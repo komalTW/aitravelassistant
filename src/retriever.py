@@ -8,13 +8,13 @@ def retrieve_docs(query: str, top_k=5):
 
     query_vector = get_embeddings([query])[0]
 
-    search_result = client.search(
+    search_result = client.query_points(
         collection_name=COLLECTION_NAME,
-        query_vector=query_vector,
+        query=query_vector,
         limit=top_k,
     )
 
     print("Retriever module loaded successfully.")
-    return [hit.payload["text"] for hit in search_result]
+    return [hit.payload["text"] for hit in search_result.points]
     
     

@@ -1,8 +1,9 @@
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, HTTPException, UploadFile
 from contextlib import asynccontextmanager
 from pydantic import BaseModel
 from src.ingest import ingest_pdf
 from src.vectorstores import init_qdrant
+from src.retriever import retrieve_docs
 from src.generator import generate_answer
 
 
@@ -22,8 +23,11 @@ class QueryRequest(BaseModel):
 
 @app.post("/ask")
 async def ask_question(req: QueryRequest):
-    resp = generate_answer(req.query)
-    return {"response": resp}
+    try:
+        resp = generate_answer(req.query)
+        return {"response": resp}
+    except RuntimeError as error:
+        raise HTTPException(status_code=503, detail=str(error)) from error
 
 @app.post("/upload")
 async def upload_file(file: UploadFile = None):

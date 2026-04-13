@@ -13,4 +13,6 @@ requests
 langchain-community
 langchain-huggingface
 langchain-openai
+langchain-text-splitters
 python-multipart
+pydantic
